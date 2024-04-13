@@ -1,6 +1,6 @@
 import React ,{useState,useEffect}from 'react'
 import { SafeAreaView , Text, View, StyleSheet, Button } from 'react-native'
-import auth from '@react-native-firebase/auth';
+import auth, { firebase } from '@react-native-firebase/auth';
 import Auth from './src/components/Auth';
 
 export default function App() {//inicio
@@ -28,13 +28,33 @@ export default function App() {//inicio
       </>
      );
    }
+   if(initializing)return null;
+
+   if(user){
+    return(
+      <>
+        <SafeAreaView style={styles.background}>
+        { user ? <Logout/> : <Auth/>} 
+        </SafeAreaView>
+      </>
+    )
+   }
+   return(
+    <View>
+      <Text>{user.email}</Text>
+    </View>
+   )
 };// final
 
-function Logout(){
+function Logout() {
+
+  const  logout = () =>{
+    firebase.auth().signOut()
+  }
   return(
     <View>
-      <Text>Estas Logeado</Text>
-      <Button title="Cerrar sesion "/>
+      <Text>Estas logueado</Text>
+      <Button title="Cerrar Sesion" onPress={logout} />
     </View>
   )
 }

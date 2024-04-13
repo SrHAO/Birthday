@@ -24,18 +24,17 @@ export default function RegisterForm(props){//inicio
                 errors.password = true;
                 errors.repeatPassword = true;
             }else{
-            firebase.auth().createUserWithEmailAndPassword(formData.email, formData.password, formData.repeatPassword)
-            .then(()=>{
-                console.log("Usuario creado");
-            }).catch(() => {//inicio
-                setFormError({
+                firebase.auth().createUserWithEmailAndPassword(formData.email, formData.password)
+                .then(() => {
+                    console.log("Cuenta  creada");
+                }).catch(() => setFormError({
                     email:true,
                     password:true,
-                    repeatPassword:true,
-                })
-            })//final
+                    repeatPassword:true
+                }))
+               
             }
-        setFormError(errors);
+                setFormError(errors); //
     }//final
     
     return (//inicio del return
