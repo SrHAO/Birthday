@@ -1,7 +1,13 @@
-import React ,{useState,useEffect}from 'react'
-import { SafeAreaView , Text, View, StyleSheet, Button } from 'react-native'
+import React ,{useState,useEffect}from 'react';
+import { SafeAreaView , StyleSheet, StatusBar, } from 'react-native';
 import auth, { firebase } from '@react-native-firebase/auth';
 import Auth from './src/components/Auth';
+import ListBirthday from './src/components/ListBirthday';
+import {decode, encode} from "base-64";
+
+if (!global.btoa) global.btoa = encode;
+if (!global.atob) global.atob = decode;
+
 
 export default function App() {//inicio
 
@@ -12,6 +18,7 @@ export default function App() {//inicio
    // Funcion de Cambio de Estado
    function onAuthStateChanged(user) {
      setUser(user);
+
      if (initializing) setInitializing(false);
    }
      useEffect(() => {
@@ -19,45 +26,14 @@ export default function App() {//inicio
      return subscriber; // unsubscribe on unmount
    }, []);
 
-   if (!user) {
      return (
       <>
         <SafeAreaView style={styles.background}>
-        { user ? <Logout/> : <Auth/>} 
+        { user ? <ListBirthday user={user} /> : <Auth/>} 
         </SafeAreaView>
       </>
      );
-   }
-   if(initializing)return null;
-
-   if(user){
-    return(
-      <>
-        <SafeAreaView style={styles.background}>
-        { user ? <Logout/> : <Auth/>} 
-        </SafeAreaView>
-      </>
-    )
-   }
-   return(
-    <View>
-      <Text>{user.email}</Text>
-    </View>
-   )
-};// final
-
-function Logout() {
-
-  const  logout = () =>{
-    firebase.auth().signOut()
-  }
-  return(
-    <View>
-      <Text>Estas logueado</Text>
-      <Button title="Cerrar Sesion" onPress={logout} />
-    </View>
-  )
-}
+   }//final
 
 const styles = StyleSheet.create({//inicio
   background:{

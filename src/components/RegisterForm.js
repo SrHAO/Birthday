@@ -25,9 +25,7 @@ export default function RegisterForm(props){//inicio
                 errors.repeatPassword = true;
             }else{
                 firebase.auth().createUserWithEmailAndPassword(formData.email, formData.password)
-                .then(() => {
-                    console.log("Cuenta  creada");
-                }).catch(() => setFormError({
+                .catch(() => setFormError({
                     email:true,
                     password:true,
                     repeatPassword:true
